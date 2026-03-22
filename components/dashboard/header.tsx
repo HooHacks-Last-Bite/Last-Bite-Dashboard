@@ -20,12 +20,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Settings className="h-5 w-5" />
-          </Button>
           <div className="ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
             <span className="text-sm font-medium">DH</span>
           </div>

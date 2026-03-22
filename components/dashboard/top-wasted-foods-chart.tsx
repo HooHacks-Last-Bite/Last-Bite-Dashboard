@@ -14,7 +14,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { topWastedFoods } from "@/lib/dummy-data";
+
+type Metric = {
+  foodName: string;
+  frequency: number;
+  shareOfAllWasted: number;
+  shareOfThisWasted: number;
+  providedCount: number;
+};
 
 const chartConfig = {
   wasteRate: {
@@ -23,7 +30,16 @@ const chartConfig = {
   },
 };
 
-export function TopWastedFoodsChart() {
+export function TopWastedFoodsChart({ metrics }: { metrics: Metric[] }) {
+  const chartData = metrics
+    .filter((item) => item.frequency > 0)
+    .map((item) => ({
+      name: item.foodName,
+      wasteRate: Number((item.shareOfThisWasted * 100).toFixed(1)),
+    }))
+    .sort((a, b) => b.wasteRate - a.wasteRate)
+    .slice(0, 6);
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -38,13 +54,13 @@ export function TopWastedFoodsChart() {
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={topWastedFoods}
+              data={chartData}
               layout="vertical"
               margin={{ top: 0, right: 20, bottom: 0, left: 60 }}
             >
               <XAxis
                 type="number"
-                domain={[0, 50]}
+                domain={[0, 100]}
                 tickFormatter={(value) => `${value}%`}
                 tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
                 axisLine={false}
@@ -56,7 +72,7 @@ export function TopWastedFoodsChart() {
                 tick={{ fill: "var(--foreground)", fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
-                width={55}
+                width={80}
               />
               <ChartTooltip
                 content={
@@ -66,10 +82,14 @@ export function TopWastedFoodsChart() {
                 }
               />
               <Bar dataKey="wasteRate" radius={[0, 4, 4, 0]} maxBarSize={24}>
-                {topWastedFoods.map((entry, index) => (
+                {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={entry.wasteRate > 30 ? "var(--accent)" : "var(--secondary)"}
+                    fill={
+                      entry.wasteRate > 30
+                        ? "var(--accent)"
+                        : "var(--secondary)"
+                    }
                   />
                 ))}
               </Bar>

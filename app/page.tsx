@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Header } from "@/components/dashboard/header";
 import { StatsCards } from "@/components/dashboard/stats-cards";
@@ -6,12 +8,60 @@ import { WasteOverTimeChart } from "@/components/dashboard/waste-over-time-chart
 import { WasteHeatmap } from "@/components/dashboard/waste-heatmap";
 import { InsightsPanel } from "@/components/dashboard/insights-panel";
 import { RecentScans } from "@/components/dashboard/recent-scans";
-import Dashboard from "@/components/dashboard/dashboard";
+import { useEffect, useState } from "react";
+
+type Metric = {
+  foodName: string;
+  frequency: number;
+  shareOfAllWasted: number;
+  shareOfThisWasted: number;
+  providedCount: number;
+};
+
+type Scan = {
+  uuid: string;
+  createdAt: string;
+  foodName: string;
+};
 
 export default function DashboardPage() {
+  const [metrics, setMetrics] = useState<Metric[]>([]);
+  const [scans, setScans] = useState<Scan[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [metricsRes, scansRes] = await Promise.all([
+          fetch("http://localhost:5000/Metrics/getMetrics/getAll"),
+          fetch("http://localhost:5000/Scans/getScans/getAll"),
+        ]);
+
+        if (!metricsRes.ok) {
+          throw new Error(`Metrics status: ${metricsRes.status}`);
+        }
+
+        if (!scansRes.ok) {
+          throw new Error(`Scans status: ${scansRes.status}`);
+        }
+
+        const metricsData: Metric[] = await metricsRes.json();
+        const scansData: Scan[] = await scansRes.json();
+
+        console.log("METRICS DATA:", metricsData);
+        console.log("SCANS DATA:", scansData);
+
+        setMetrics(metricsData);
+        setScans(scansData);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
-      <Header />
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Page Title */}
@@ -29,36 +79,19 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        {/* Stats Cards */}
         <section className="mb-8">
-          <StatsCards />
+          <StatsCards metrics={metrics} />
         </section>
 
-
-        {/* Charts Row */}
         <section className="mb-8 grid gap-6 lg:grid-cols-2">
-          <TopWastedFoodsChart />
-          <WasteOverTimeChart />
+          <TopWastedFoodsChart metrics={metrics} />
+          <WasteOverTimeChart scans={scans} />
         </section>
 
-        {/* Heatmap */}
         <section className="mb-8">
-          <WasteHeatmap />
+          <WasteHeatmap scans={scans} />
         </section>
 
-        {/* Insights and Recent Scans */}
-        <section className="grid gap-6 lg:grid-cols-2">
-          <InsightsPanel />
-          <RecentScans />
-        </section>
-
-        {/* Footer */}
-        <footer className="mt-12 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>
-            Waste Watcher &copy; 2024 &bull; Reducing food waste, one plate at a
-            time.
-          </p>
-        </footer>
       </main>
     </div>
   );

@@ -5,44 +5,52 @@ import {
   TrendingDown,
   Utensils,
   Scale,
-  ScanLine,
   ArrowDownRight,
-  ArrowUpRight,
 } from "lucide-react";
-import { summaryStats } from "@/lib/dummy-data";
 
-const stats = [
-  {
-    title: "Total Waste Today",
-    value: `${summaryStats.totalWasteToday} lbs`,
-    change: -8,
-    icon: Scale,
-    trend: "down",
-  },
-  {
-    title: "Meals Served",
-    value: summaryStats.totalMealsToday.toLocaleString(),
-    change: 5,
-    icon: Utensils,
-    trend: "up",
-  },
-  {
-    title: "Waste Reduction",
-    value: `${summaryStats.wasteReduction}%`,
-    change: 12,
-    icon: TrendingDown,
-    trend: "down",
-  },
-  {
-    title: "Scans Today",
-    value: summaryStats.scansToday.toLocaleString(),
-    change: 15,
-    icon: ScanLine,
-    trend: "up",
-  },
-];
+type Metric = {
+  foodName: string;
+  frequency: number;
+  shareOfAllWasted: number;
+  shareOfThisWasted: number;
+  providedCount: number;
+};
 
-export function StatsCards() {
+export function StatsCards({ metrics }: { metrics: Metric[] }) {
+  const totalWasteCount = metrics.reduce((sum, item) => sum + item.frequency, 0);
+  const totalMealsServed = metrics.reduce(
+    (sum, item) => sum + item.providedCount,
+    0
+  );
+
+  const overallWasteRate =
+    totalMealsServed > 0 ? (totalWasteCount / totalMealsServed) * 100 : 0;
+
+  const uniqueFoodsWasted = metrics.filter((item) => item.frequency > 0).length;
+
+  const stats = [
+    {
+      title: "Total Waste Count",
+      value: totalWasteCount.toLocaleString(),
+      icon: Scale,
+    },
+    {
+      title: "Meals Served",
+      value: totalMealsServed.toLocaleString(),
+      icon: Utensils,
+    },
+    {
+      title: "Overall Waste Rate",
+      value: `${overallWasteRate.toFixed(1)}%`,
+      icon: TrendingDown,
+    },
+    {
+      title: "Foods Wasted",
+      value: uniqueFoodsWasted.toLocaleString(),
+      icon: Scale,
+    },
+  ];
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (
@@ -62,16 +70,9 @@ export function StatsCards() {
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1">
-              {stat.trend === "down" ? (
-                <ArrowDownRight className="h-4 w-4 text-secondary" />
-              ) : (
-                <ArrowUpRight className="h-4 w-4 text-secondary" />
-              )}
-              <span className="text-sm font-medium text-secondary">
-                {stat.change}%
-              </span>
+              <ArrowDownRight className="h-4 w-4 text-secondary" />
               <span className="text-sm text-muted-foreground">
-                vs last week
+                Live from metrics API
               </span>
             </div>
           </CardContent>

@@ -1,14 +1,28 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { heatmapData } from "@/lib/dummy-data";
+
+type Scan = {
+  uuid: string;
+  createdAt: string;
+  foodName: string;
+};
 
 const mealTimes = ["breakfast", "lunch", "dinner"] as const;
+
 const mealTimeLabels = {
   breakfast: "Breakfast",
   lunch: "Lunch",
   dinner: "Dinner",
 };
+
+function getMealTime(date: Date): "breakfast" | "lunch" | "dinner" {
+  const hour = date.getHours();
+
+  if (hour < 11) return "breakfast";
+  if (hour < 16) return "lunch";
+  return "dinner";
+}
 
 function getHeatColor(value: number): string {
   if (value === 0) return "bg-muted";
@@ -24,7 +38,42 @@ function getTextColor(value: number): string {
   return "text-foreground font-semibold";
 }
 
-export function WasteHeatmap() {
+export function WasteHeatmap({ scans }: { scans: Scan[] }) {
+  const grouped: Record<
+    string,
+    { breakfast: number; lunch: number; dinner: number; total: number }
+  > = {};
+
+  scans.forEach((scan) => {
+    const food = scan.foodName?.trim();
+    if (!food) return;
+
+    if (!grouped[food]) {
+      grouped[food] = {
+        breakfast: 0,
+        lunch: 0,
+        dinner: 0,
+        total: 0,
+      };
+    }
+
+    const mealTime = getMealTime(new Date(scan.createdAt));
+    grouped[food][mealTime] += 1;
+    grouped[food].total += 1;
+  });
+
+  const heatmapData = Object.entries(grouped)
+    .map(([food, counts]) => ({
+      food,
+      breakfast:
+        counts.total > 0 ? Math.round((counts.breakfast / counts.total) * 100) : 0,
+      lunch: counts.total > 0 ? Math.round((counts.lunch / counts.total) * 100) : 0,
+      dinner: counts.total > 0 ? Math.round((counts.dinner / counts.total) * 100) : 0,
+      total: counts.total,
+    }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 8);
+
   return (
     <Card>
       <CardHeader>
@@ -32,7 +81,7 @@ export function WasteHeatmap() {
           Waste Heatmap
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Food waste distribution by meal time (% wasted)
+          Waste distribution by meal time for top scanned foods
         </p>
       </CardHeader>
       <CardContent>
@@ -63,6 +112,7 @@ export function WasteHeatmap() {
                   >
                     {row.food}
                   </td>
+
                   {mealTimes.map((time) => {
                     const value = row[time];
                     return (
@@ -84,11 +134,21 @@ export function WasteHeatmap() {
                   })}
                 </tr>
               ))}
+
+              {heatmapData.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="py-6 text-center text-sm text-muted-foreground"
+                  >
+                    No scan data available yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* Legend */}
         <div className="mt-6 flex items-center justify-center gap-4">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 rounded bg-secondary/40"></div>

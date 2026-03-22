@@ -1,18 +1,5 @@
 {
-  "node": {
-    "40bedb53e66145b8e2683a9c045d6479d3e9060656": {
-      "workers": {
-        "app/upload/page": {
-          "moduleId": "[project]/.next-internal/server/app/upload/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/upload/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false,
-          "exportedName": "uploadImageAction",
-          "filename": "app/upload/actions.ts"
-        }
-      },
-      "filename": "app/upload/actions.ts",
-      "exportedName": "uploadImageAction"
-    }
-  },
+  "node": {},
   "edge": {},
   "encryptionKey": "bF2pvnVH3HSlq+M0toxJ0P7mmOHqU8x0PhURlFpVlWo="
 }
