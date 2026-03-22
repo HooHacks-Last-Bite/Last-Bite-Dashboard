@@ -30,21 +30,20 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [metricsRes, scansRes] = await Promise.all([
-          fetch("http://172.20.10.9:5000/Metrics/getMetrics/getAll"),
-          fetch("http://172.20.10.9:5000/Scans/getScans/getAll"),
-        ]);
+        const dashboardRes = await fetch("/api/dashboard", {
+          method: "GET",
+          cache: "no-store",
+        });
 
-        if (!metricsRes.ok) {
-          throw new Error(`Metrics status: ${metricsRes.status}`);
+        if (!dashboardRes.ok) {
+          const errorText = await dashboardRes.text();
+          throw new Error(`Dashboard status: ${dashboardRes.status} - ${errorText}`);
         }
 
-        if (!scansRes.ok) {
-          throw new Error(`Scans status: ${scansRes.status}`);
-        }
-
-        const metricsData: Metric[] = await metricsRes.json();
-        const scansData: Scan[] = await scansRes.json();
+        const {
+          metrics: metricsData,
+          scans: scansData,
+        }: { metrics: Metric[]; scans: Scan[] } = await dashboardRes.json();
 
         console.log("METRICS DATA:", metricsData);
         console.log("SCANS DATA:", scansData);
