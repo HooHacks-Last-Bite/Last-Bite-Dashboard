@@ -2,10 +2,11 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  TrendingDown,
+  Trash2,
   Utensils,
-  Scale,
-  ArrowDownRight,
+  Percent,
+  Apple,
+  ArrowRight,
 } from "lucide-react";
 
 type Metric = {
@@ -32,22 +33,26 @@ export function StatsCards({ metrics }: { metrics: Metric[] }) {
     {
       title: "Total Waste Count",
       value: totalWasteCount.toLocaleString(),
-      icon: Scale,
+      icon: Trash2,
+      subtext: "Synced from waste logs",
     },
     {
       title: "Meals Served",
       value: totalMealsServed.toLocaleString(),
       icon: Utensils,
+      subtext: "Updated from serving data",
     },
     {
       title: "Overall Waste Rate",
       value: `${overallWasteRate.toFixed(1)}%`,
-      icon: TrendingDown,
+      icon: Percent,
+      subtext: "Calculated from live data",
     },
     {
       title: "Foods Wasted",
       value: uniqueFoodsWasted.toLocaleString(),
-      icon: Scale,
+      icon: Apple,
+      subtext: "Tracked across menu items",
     },
   ];
 
@@ -55,7 +60,7 @@ export function StatsCards({ metrics }: { metrics: Metric[] }) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (
         <Card key={stat.title} className="overflow-hidden">
-          <CardContent className="p-6">
+          <CardContent className="px-4 py-1.5">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
@@ -70,9 +75,9 @@ export function StatsCards({ metrics }: { metrics: Metric[] }) {
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1">
-              <ArrowDownRight className="h-4 w-4 text-secondary" />
+              <ArrowRight className="h-4 w-4 text-secondary" />
               <span className="text-sm text-muted-foreground">
-                Live from metrics API
+                {stat.subtext}
               </span>
             </div>
           </CardContent>

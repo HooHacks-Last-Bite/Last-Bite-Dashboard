@@ -70,9 +70,7 @@ export default function DashboardPage() {
               Dashboard Overview
             </h2>
           </div>
-          {/* <Link href="/upload" className="text-blue-600 hover:underline">
-            Upload Pictures
-          </Link> */}
+
         </div>
 
         <section className="mb-8">

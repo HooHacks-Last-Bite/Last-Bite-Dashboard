@@ -1,12 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: 'Waste Watcher | Dining Hall Food Waste Analytics',
+  title: "Last Bite | Dining Halls' Big Brother",
   description: 'Reduce dining hall food waste by collecting plate-level waste data and converting it into actionable operational insights.',
   generator: 'v0.app',
   icons: {
@@ -37,7 +36,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
         {children}
-        <Analytics />
       </body>
     </html>
   )
