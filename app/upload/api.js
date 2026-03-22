@@ -1,4 +1,4 @@
-const API_URL = "http://172.20.10.3:3000/upload";
+const API_URL = "http://172.20.10.10:8000/upload";
 
 /**
  * Converts a base64 data URL to a Blob.
@@ -26,7 +26,8 @@ export async function uploadPhoto(imageDataUrl, filename) {
   const blob = dataUrlToBlob(imageDataUrl);
 
   const formData = new FormData();
-  formData.append("photo", blob, filename);
+  //formData.append("photo", blob, filename);
+  formData.append("file", blob, filename);
 
   const response = await fetch(API_URL, {
     method: "POST",
