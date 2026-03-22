@@ -17,7 +17,7 @@ const mealTimeLabels = {
 };
 
 function getMealTime(date: Date): "breakfast" | "lunch" | "dinner" {
-  const hour = date.getHours();
+  const hour = date.getUTCHours();
 
   if (hour < 11) return "breakfast";
   if (hour < 16) return "lunch";

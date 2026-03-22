@@ -4,7 +4,6 @@ import { useCallback, useRef, useState } from 'react';
 import '../../styles/photo.css'
 import { uploadPhoto } from "@/lib/upload-photo";
 
-
 export default function PhotoCapture() {
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
@@ -111,7 +110,8 @@ export default function PhotoCapture() {
   };
  
   return (
-    <div className="app">
+    <div className="w-full flex justify-center">
+      
       <div className="card">
         <div className="header">
           <div className="icon-ring">
