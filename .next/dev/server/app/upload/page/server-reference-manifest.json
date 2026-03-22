@@ -1,0 +1,29 @@
+{
+  "node": {
+    "000fa4091c3e445536f93a6aab1abe05dbc2ac6efc": {
+      "workers": {
+        "app/upload/page": {
+          "moduleId": "[project]/.next-internal/server/app/upload/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/upload/page.tsx [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/app/upload/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "default",
+          "filename": "app/upload/page.tsx"
+        }
+      },
+      "exportedName": "default",
+      "filename": "app/upload/page.tsx"
+    },
+    "40bedb53e66145b8e2683a9c045d6479d3e9060656": {
+      "workers": {
+        "app/upload/page": {
+          "moduleId": "[project]/.next-internal/server/app/upload/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/upload/page.tsx [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/app/upload/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "uploadImageAction",
+          "filename": "app/upload/actions.ts"
+        }
+      },
+      "exportedName": "uploadImageAction",
+      "filename": "app/upload/actions.ts"
+    }
+  },
+  "edge": {}
+}
