@@ -223,6 +223,9 @@ self.__SERVER_FILES_MANIFEST={
       "turbopackFileSystemCacheForBuild": false,
       "turbopackInferModuleSideEffects": true,
       "turbopackPluginRuntimeStrategy": "childProcesses",
+      "serverActions": {
+        "bodySizeLimit": "10mb"
+      },
       "optimizePackageImports": [
         "lucide-react",
         "date-fns",
