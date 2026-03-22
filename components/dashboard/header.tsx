@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, Bell, Settings, Upload } from "lucide-react";
+import { Leaf, Bell, Upload, Brain } from "lucide-react";
 import Link from "next/link";
 
 
@@ -17,19 +17,28 @@ export function Header() {
             </div>
             <h1 className="text-[26px]  font-bold text-foreground">Last Bite</h1>
           </div>
+            <div className="flex items-center gap-2">
+              {/* New AI Insights Button */}
+              <Link
+                href="/ai-insights"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background hover:bg-accent"
+              >
+                <Brain className="h-5 w-5" />
+              </Link>
 
-          <div className="flex items-center gap-2">
-            <Link
-              href="/upload"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background hover:bg-accent"
-            >
-              <Upload className="h-5 w-5" />
-            </Link>
+              {/* Existing Upload Button */}
+              <Link
+                href="/upload"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background hover:bg-accent"
+              >
+                <Upload className="h-5 w-5" />
+              </Link>
 
-            <div className="ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
-              <span className="text-sm font-medium">RSJ</span>
+              {/* User Avatar / Initials */}
+              <div className="ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
+                <span className="text-sm font-medium">RSJ</span>
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </header>
