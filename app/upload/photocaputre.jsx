@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import '../../styles/photo.css'
-import { uploadPhoto } from "./api";
+import { uploadPhoto } from "@/lib/upload-photo";
 
 
 export default function PhotoCapture() {
