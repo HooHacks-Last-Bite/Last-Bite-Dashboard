@@ -31,8 +31,8 @@ export default function DashboardPage() {
     const fetchData = async () => {
       try {
         const [metricsRes, scansRes] = await Promise.all([
-          fetch("http://localhost:5000/Metrics/getMetrics/getAll"),
-          fetch("http://localhost:5000/Scans/getScans/getAll"),
+          fetch("http://172.20.10.9:5000/Metrics/getMetrics/getAll"),
+          fetch("http://172.20.10.9:5000/Scans/getScans/getAll"),
         ]);
 
         if (!metricsRes.ok) {
